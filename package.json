@@ -1,0 +1,18 @@
+{
+  "name": "leetcode-design",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "slides:html": "marp --html -o dist",
+    "slides:pdf": "marp --pdf -o dist",
+    "slides:preview": "marp --preview",
+    "slides:watch": "marp --watch --html -o dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@marp-team/marp-cli": "^4.2.3"
+  }
+}
