@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "html": "marp --html --allow-local-files",
+    "pdf": "marp --pdf --allow-local-files",
+    "preview": "marp --preview",
     "slides:html": "marp --html --input-dir slides --output dist",
     "slides:pdf": "marp --pdf --input-dir slides --output dist",
-    "slides:preview": "marp --preview",
     "slides:watch": "marp --watch --html --input-dir slides --output dist"
   },
   "keywords": [],

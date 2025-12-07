@@ -10,28 +10,28 @@ npm install
 
 ## Usage
 
-### Preview single file in browser
+### Convert single file
 
 ```bash
-npm run slides:preview slides/leetcode-system-design.md
+# PDF (output cùng thư mục)
+npm run pdf slides/leetcode-system-design.md
+
+# PDF với output path tùy chọn
+npm run pdf slides/leetcode-system-design.md -- -o dist/leetcode.pdf
+
+# HTML
+npm run html slides/leetcode-system-design.md -- -o dist/leetcode.html
+
+# Preview
+npm run preview slides/leetcode-system-design.md
 ```
 
-### Export all slides to HTML
+### Convert all slides
 
 ```bash
-npm run slides:html
-```
-
-### Export all slides to PDF
-
-```bash
-npm run slides:pdf
-```
-
-### Watch mode (auto-rebuild on changes)
-
-```bash
-npm run slides:watch
+npm run slides:html   # All slides -> dist/*.html
+npm run slides:pdf    # All slides -> dist/*.pdf
+npm run slides:watch  # Watch mode, auto-rebuild
 ```
 
 Output files will be generated in `dist/` folder.
