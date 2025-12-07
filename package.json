@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "slides:html": "marp --html -o dist",
-    "slides:pdf": "marp --pdf -o dist",
+    "slides:html": "marp --html --input-dir slides --output dist",
+    "slides:pdf": "marp --pdf --input-dir slides --output dist",
     "slides:preview": "marp --preview",
-    "slides:watch": "marp --watch --html -o dist"
+    "slides:watch": "marp --watch --html --input-dir slides --output dist"
   },
   "keywords": [],
   "author": "",
