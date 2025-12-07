@@ -1,4 +1,4 @@
-# LeetCode System Design
+# System Design
 
 System design interview preparation slides using Marp.
 
@@ -42,7 +42,7 @@ Install recommended extension **Marp for VS Code** to preview slides directly in
 
 ## Slides
 
-| File | Description |
-|------|-------------|
+| File                               | Description                           |
+| ---------------------------------- | ------------------------------------- |
 | `slides/leetcode-system-design.md` | Full LeetCode system design (7 steps) |
-| `slides/example.md` | Example template |
+| `slides/example.md`                | Example template                      |
