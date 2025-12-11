@@ -7,6 +7,7 @@
     "html": "marp --html --allow-local-files",
     "pdf": "marp --pdf --allow-local-files",
     "preview": "marp --preview",
+    "watch": "marp --watch --html --allow-local-files",
     "slides:html": "marp --html --input-dir slides --output dist",
     "slides:pdf": "marp --pdf --input-dir slides --output dist",
     "slides:watch": "marp --watch --html --input-dir slides --output dist"

@@ -24,6 +24,9 @@ npm run html slides/leetcode-system-design.md -- -o dist/leetcode.html
 
 # Preview
 npm run preview slides/leetcode-system-design.md
+
+# Watch single file (auto-rebuild on save)
+npm run watch slides/leetcode-system-design.md
 ```
 
 ### Convert all slides
@@ -34,6 +37,7 @@ npm run slides:pdf    # All slides -> dist/*.pdf
 npm run slides:watch  # Watch mode, auto-rebuild
 ```
 
+npm run watch slides/sd1-final-homework/leetcode-system-design.md
 Output files will be generated in `dist/` folder.
 
 ## VS Code
