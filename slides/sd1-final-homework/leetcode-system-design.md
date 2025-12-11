@@ -55,17 +55,15 @@ Members: Tuan Le Hoang - Long Nguyen Hoang
 # 2. Back of the Envelope Estimation
 
 - Daily Active Users: 500,000
-- Problems in DB: 4000
 - Contest participants: 10,000
 - Problems in DB: 3000+, growth: 8 problems/week => 418 problems/year
+- Leetcode has [26.3 milion](https://en.wikipedia.org/wiki/LeetCode) monthly visitors
+  => 26.3 \* 10^6 / 30 / 86000 = 10 QPS
+- Support 10+ popular programming Languages: Python 3, python 2, Java, C++, C, C#, C, Javascript, Typescript, Go, Swift, Rust, PHP, Kotlin...
 
 ---
 
 # Submission Estimation
-
-- Leetcode has [26.3 milion](https://en.wikipedia.org/wiki/LeetCode) monthly visitors
-  => 26.3 \* 10^6 / 30 / 86000 = 10 QPS
-- Support 10+ popular programming Languages: Python 3, python 2, Java, C++, C, C#, C, Javascript, Typescript, Go, Swift, Rust, PHP, Kotlin...
 
 ```
 
@@ -77,7 +75,7 @@ Daily submissions:
 
 Peak submissions (contest):
     10,000 * 20 submissions = 200,000 in 90 minutes
-    => 2 * 10^5 / 4800 = 41 submissions/second
+    => 2 * 10^5 / 5400 = 37 submissions/second
     => 4 submissions/language/second
 ```
 
@@ -91,8 +89,7 @@ Per submission:
     Metadata: ~1KB
     Results: ~2 KB
     => Total: ~13 KB
-    => Daily storage:
-    1.5 M * 13 KB = 20 GB/day
+    => Daily storage: 1.5 M * 13 KB = 20 GB/day
     => Monthly storage growth: 600 GB/month
 
 Problems + Test cases:
@@ -186,7 +183,7 @@ GET: profile, submissions, progress.
 
 ## Entity Relationship Diagram
 
-![bg right:60% fit](assets/er-4k.jpeg)
+![bg right:60% fit](assets/er-bold.jpeg)
 
 ---
 
