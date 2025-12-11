@@ -29,9 +29,9 @@ Members: Tuan Le Hoang - Long Nguyen Hoang
 # Functional Requirements
 
 - View Problems
-- Submit Solutions in multiple language
+- Submit Solutions in multiple languages
 - Join Coding Contests
-- Discussion
+- Post and discuss solution
 
 ---
 
@@ -120,3 +120,65 @@ Outgoing
 # 3. API Design
 
 ---
+
+# Problem APIs
+
+```http
+GET /problems?page=1&limit=100
+-> Partial<Problem>[] : [{id, title, difficulty, tags...}]
+
+GET /problems/{problem_id}
+-> {id, title, description, examples, constraints, starter_code, difficulty, tags, acceptance_rate...}
+
+GET /problems/{problem_id}/solutions?sort=votes&page=1
+->
+```
+
+---
+
+# Submission APIs
+
+```http
+POST /problems/{problem_id}/run
+Body: {code, language, test_input}
+-> {results, runtime_ms, memory_bk}
+
+POST /problems/{problems_id}/submit
+Body: {code, language}
+-> {submission_id}
+
+GET /submissions/{submission_id}
+-> {status: "pending" | "running" | "accepted" | "wrong_anser", results, runtime_ms, memory_kb}
+```
+
+---
+
+# Contest APIs
+
+```http
+GET /contests
+-> {upcoming: [...], ongoing: [...], past: [...]}
+
+GET /contests/{contest_id}
+-> {id, title, start_time, end_time, problems: [...]}
+
+POST /contests/{contest_id}/register
+-> {success: true}
+
+GET /contests/{contest_id}/leaderboard?page=1&limit=50
+{rankings: [{rank, user, score, finish_time}]}
+
+```
+
+---
+
+# User APIs
+
+```http
+GET: profile, submissions, progress.
+---
+```
+
+---
+
+# 4. Data Model Design
