@@ -176,9 +176,18 @@ GET /contests/{contest_id}/leaderboard?page=1&limit=50
 
 ```http
 GET: profile, submissions, progress.
----
 ```
 
 ---
 
 # 4. Data Model Design
+
+---
+
+## Entity Relationship Diagram
+
+![bg right:60% fit](assets/er-4k.jpeg)
+
+---
+
+# 5. High level Design
