@@ -36,7 +36,7 @@ Members: Tuan Le Hoang - Hoang Long Le
 # Non-Functional Requirements
 
 - Availability: 99.9% uptime
-- Scalability: 10K+ current submissions
+- Scalability: 10K+ concurrent submissions
 - Latency: Code execution < 10s, leaderboard update: < 5s
 - Security: Isolated code execution, prevent malicious code
 
@@ -53,11 +53,12 @@ Members: Tuan Le Hoang - Hoang Long Le
 
 # 2. Back of the Envelope Estimation
 
+- Leetcode has [26.3 milion](https://en.wikipedia.org/wiki/LeetCode) monthly visitors
+  => 26.3 \* 10^6 / 30 / 86000 = 10 QPS
 - Daily Active Users: 500,000
 - Contest participants: 10,000
 - Problems in DB: 3000+, growth: 8 problems/week => 418 problems/year
-- Leetcode has [26.3 milion](https://en.wikipedia.org/wiki/LeetCode) monthly visitors
-  => 26.3 \* 10^6 / 30 / 86000 = 10 QPS
+
 - Support 10+ popular programming Languages: Python 3, python 2, Java, C++, C, C#, C, Javascript, Typescript, Go, Swift, Rust, PHP, Kotlin...
 
 ---
@@ -65,7 +66,6 @@ Members: Tuan Le Hoang - Hoang Long Le
 # Submission Estimation
 
 ```
-
 Daily submissions:
     500,000 DAU * 3 = 1.5 M submissions/day
     => 1.5 * 10^6 / 86,000 = 17 submissions/second
@@ -92,7 +92,7 @@ Per submission:
     => Monthly storage growth: 600 GB/month
 
 Problems + Test cases:
-    3,000 * 50 test cases * 10 KB = 1.5 GB
+    3000*50 KB + 3,000 * 50 test cases * 10 KB ≈ 1.6 GB
 ```
 
 ---
@@ -141,7 +141,7 @@ Body: {code, language}
 -> {submission_id}
 
 GET /submissions/{submission_id}
--> {status: "pending" | "running" | "accepted" | "wrong_anser", results, runtime_ms, memory_kb}
+-> {status: "pending" | "running" | "accepted" | "wrong_anser" ..., results, runtime_ms, memory_kb}
 ```
 
 ---
@@ -165,14 +165,6 @@ GET /contests/{contest_id}/leaderboard?page=1&limit=50
 
 ---
 
-# User APIs
-
-```http
-GET: profile, submissions, progress.
-```
-
----
-
 # 4. Data Model Design
 
 ---
@@ -180,6 +172,84 @@ GET: profile, submissions, progress.
 ## Entity Relationship Diagram
 
 ![bg right:60% fit](assets/er-bold.jpeg)
+
+---
+
+## Data Models
+
+```prisma
+model User {
+  id         Uuid
+  username   String
+  email      String
+  submissions Submission[]
+  contestEntries ContestEntry[]
+}
+
+model Problem {
+  id          Uuid
+  title       String
+  description String
+  difficulty  String   // easy | medium | hard
+  testCases   TestCase[]
+  submissions Submission[]
+  contests    Contest[] @relation("ContestProblems")
+}
+
+```
+
+---
+
+## Data Models (cont.)
+
+```prisma
+model Submission {
+  id        Uuid
+  userId    Uuid
+  problemId Uuid
+  code      String
+  language  String
+  status    Enum   // pending | accepted | wrong_answer | TLE | MLE | RE | CE
+  runtimeMs Int?
+  memoryKb  Int?
+  user      User     @relation(fields: [userId], references: [id])
+  problem   Problem  @relation(fields: [problemId], references: [id])
+}
+
+model Contest {
+  id        Uuid
+  title     String
+  startTime DateTime
+  endTime   DateTime
+  problems  Problem[] @relation("ContestProblems")
+  entries   ContestEntry[]
+  leaderboard Leaderboard?
+}
+```
+
+---
+
+## Data Models (cont.)
+
+```prisma
+model ContestEntry {
+  id        Uuid
+  contestId Uuid
+  userId    Uuid
+  score     Int     @default(0)
+  finishTime Int    @default(0)
+  contest   Contest @relation(fields: [contestId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+  @@unique([contestId, userId])
+}
+
+model Leaderboard {
+  id        Uuid
+  contestId Uuid  @unique
+  contest   Contest @relation(fields: [contestId], references: [id])
+  // Rankings stored in Redis: ZSET contest:{id}:leaderboard
+}
+```
 
 ---
 
