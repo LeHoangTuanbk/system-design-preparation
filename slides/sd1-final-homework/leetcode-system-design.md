@@ -187,9 +187,7 @@ GET: profile, submissions, progress.
 
 ---
 
-## System Architecture
-
-![bg right:65% fit](assets/HighLevelDesign.png)
+![bg right: 90% fit](assets/high-level-design.jpeg)
 
 ---
 
