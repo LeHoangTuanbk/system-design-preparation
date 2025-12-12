@@ -262,7 +262,6 @@ GET: profile, submissions, progress.
 - **Async flow**: API returns immediately with `submission_id`
 - Client polls `GET /submissions/{id}` every second for results
 - Enables retries on container failures
-- Fun fact: This is exactly how LeetCode works! (Check network tab)
 
 ---
 
@@ -277,3 +276,9 @@ GET: profile, submissions, progress.
   - Passes to user's code
   - Compares output with expected result
 - Example: Tree input `[3,9,20,null,null,15,7]` → deserialized to TreeNode object
+
+---
+
+# References
+
+- [Hello Interview - Design LeetCode](https://www.hellointerview.com/learn/system-design/answer-keys/leetcode)
