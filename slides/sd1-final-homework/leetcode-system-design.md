@@ -281,6 +281,15 @@ GET: profile, submissions, progress.
 
 - [Hello Interview - Design LeetCode](https://www.hellointerview.com/learn/system-design/answer-keys/leetcode)
 
+- [System Design School - Design LeetCode](https://systemdesignschool.io/problems/leetcode/solution)
+
 ---
+
+<style scoped>
+    h1 {
+        text-align: center;
+        margin-top: 40%;
+    }
+</style>
 
 # Thank you
