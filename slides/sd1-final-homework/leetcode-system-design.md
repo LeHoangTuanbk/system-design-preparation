@@ -6,7 +6,7 @@ paginate: true
 
 # Design Leetcode
 
-Members: Tuan Le Hoang - Long Nguyen Hoang
+Members: Tuan Le Hoang - Hoang Long Le
 
 ---
 
@@ -31,7 +31,6 @@ Members: Tuan Le Hoang - Long Nguyen Hoang
 - View Problems
 - Submit Solutions in multiple languages
 - Join Coding Contests
-- Post and discuss solution
 
 ---
 
@@ -187,4 +186,94 @@ GET: profile, submissions, progress.
 
 ---
 
-# 5. High level Design
+# 5. High Level Design
+
+---
+
+## System Architecture
+
+![bg right:65% fit](assets/HighLevelDesign.png)
+
+---
+
+## FR1: View Problems
+
+1. Client sends `GET /problems` or `GET /problems/{id}` to Primary Server
+2. Server queries SQL DB for problem data
+3. Returns problem list or details to client
+
+---
+
+## FR2: Submit Solutions
+
+1. Client sends `POST /submission` with code and language
+2. Primary Server pushes submission to **Queue** (async processing)
+3. **Worker** pulls from queue, executes code in **Docker Container**
+4. Worker sends results back to Primary Server
+5. Server stores results in SQL DB and returns to client via polling `GET /submissions/{id}`
+
+---
+
+## FR3: Join Coding Contests
+
+1. Client polls `GET /leaderboard` every 5 seconds
+2. Primary Server fetches rankings from **Redis Sorted Set** (fast O(log N))
+3. On submission completion, Worker updates both SQL DB and Redis cache
+4. Returns real-time leaderboard to client
+
+---
+
+# 6. Discussion
+
+---
+
+## Q1: How to ensure isolation and security when running user code?
+
+**Solution: Docker Containers with Security Configurations**
+
+- **Read-Only Filesystem**: Mount code directory as read-only, use temp directory for output
+- **CPU & Memory Limits**: Kill container if limits exceeded, prevent resource exhaustion
+- **Explicit Timeout**: 5-second limit to prevent infinite loops
+- **Network Isolation**: Disable network access using VPC Security Groups/NACLs
+- **Seccomp**: Restrict system calls to prevent host compromise
+
+---
+
+## Q2: How to make leaderboard fetching more efficient?
+
+**Solution: Redis Sorted Sets + Polling**
+
+- Store leaderboard in Redis sorted set: `competition:leaderboard:{contestId}`
+- Score = user's total score/solve time, Value = userId
+- Update Redis on each submission: `ZADD competition:leaderboard:{contestId} {score} {userId}`
+- Retrieve top N users: `ZREVRANGE ... 0 N-1 WITHSCORES` (O(log N))
+- Client polls every 5 seconds - simpler than WebSockets, acceptable latency
+- Reduces database load significantly
+
+---
+
+## Q3: How to scale for 100K concurrent users during contests?
+
+**Solution: Queue-based Horizontal Scaling**
+
+- Add **message queue** (SQS) between API server and workers
+- Buffer submissions during peak times, prevent container overload
+- Workers pull and process submissions independently
+- **Async flow**: API returns immediately with `submission_id`
+- Client polls `GET /submissions/{id}` every second for results
+- Enables retries on container failures
+- Fun fact: This is exactly how LeetCode works! (Check network tab)
+
+---
+
+## Q4: How to handle running test cases across multiple languages?
+
+**Solution: Standardized Serialization + Language-Specific Test Harness**
+
+- Write **one set of test cases per problem** (language-agnostic)
+- Serialize inputs/outputs in standard format (e.g., JSON arrays for trees)
+- Each language has a **test harness** that:
+  - Deserializes standardized input
+  - Passes to user's code
+  - Compares output with expected result
+- Example: Tree input `[3,9,20,null,null,15,7]` → deserialized to TreeNode object
