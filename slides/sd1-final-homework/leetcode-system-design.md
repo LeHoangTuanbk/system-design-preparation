@@ -58,8 +58,7 @@ Members: Tuan Le Hoang - Hoang Long Le
 - Daily Active Users: 500,000
 - Contest participants: 10,000
 - Problems in DB: 3000+, growth: 8 problems/week => 418 problems/year
-
-- Support 10+ popular programming Languages: Python 3, python 2, Java, C++, C, C#, C, Javascript, Typescript, Go, Swift, Rust, PHP, Kotlin...
+- Support 10+ popular programming languages: Python 3, python 2, Java, C++, C, C#, C, Javascript, Typescript, Go, Swift, Rust, PHP, Kotlin...
 
 ---
 
@@ -92,7 +91,7 @@ Per submission:
     => Monthly storage growth: 600 GB/month
 
 Problems + Test cases:
-    3000*50 KB + 3,000 * 50 test cases * 10 KB ≈ 1.6 GB
+    3000 * 50 KB + 3,000 * 50 test cases * 10 KB ≈ 1.6 GB
 ```
 
 ---
