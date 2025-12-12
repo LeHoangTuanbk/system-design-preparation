@@ -44,6 +44,7 @@ Members: Tuan Le Hoang - Hoang Long Le
 
 # Out of Scope
 
+- Solution discussion
 - User Authentication
 - Payment processing
 - User analytics / User management
@@ -124,9 +125,6 @@ GET /problems?page=1&limit=100
 
 GET /problems/{problem_id}
 -> {id, title, description, examples, constraints, starter_code, difficulty, tags, acceptance_rate...}
-
-GET /problems/{problem_id}/solutions?sort=votes&page=1
-->
 ```
 
 ---
@@ -195,7 +193,11 @@ GET: profile, submissions, progress.
 
 ---
 
-## FR1: View Problems
+# Detailed design : Flow
+
+---
+
+## View Problems
 
 1. Client sends `GET /problems` or `GET /problems/{id}` to Primary Server
 2. Server queries SQL DB for problem data
@@ -203,7 +205,7 @@ GET: profile, submissions, progress.
 
 ---
 
-## FR2: Submit Solutions
+## Submit Solutions
 
 1. Client sends `POST /submission` with code and language
 2. Primary Server pushes submission to **Queue** (async processing)
@@ -213,7 +215,7 @@ GET: profile, submissions, progress.
 
 ---
 
-## FR3: Join Coding Contests
+## Join Coding Contests
 
 1. Client polls `GET /leaderboard` every 5 seconds
 2. Primary Server fetches rankings from **Redis Sorted Set** (fast O(log N))
@@ -234,7 +236,7 @@ GET: profile, submissions, progress.
 - **CPU & Memory Limits**: Kill container if limits exceeded, prevent resource exhaustion
 - **Explicit Timeout**: 5-second limit to prevent infinite loops
 - **Network Isolation**: Disable network access using VPC Security Groups/NACLs
-- **Seccomp**: Restrict system calls to prevent host compromise
+- **Seccomp (SEcure COMputing mode)**: Restrict system calls to prevent host compromise
 
 ---
 
@@ -243,7 +245,7 @@ GET: profile, submissions, progress.
 **Solution: Redis Sorted Sets + Polling**
 
 - Store leaderboard in Redis sorted set: `competition:leaderboard:{contestId}`
-- Score = user's total score/solve time, Value = userId
+- Score = (user's total score, solve time), Value = userId
 - Update Redis on each submission: `ZADD competition:leaderboard:{contestId} {score} {userId}`
 - Retrieve top N users: `ZREVRANGE ... 0 N-1 WITHSCORES` (O(log N))
 - Client polls every 5 seconds - simpler than WebSockets, acceptable latency
@@ -251,7 +253,7 @@ GET: profile, submissions, progress.
 
 ---
 
-## Q3: How to scale for 100K concurrent users during contests?
+## Q3: How to scale for 10K+ concurrent users during contests?
 
 **Solution: Queue-based Horizontal Scaling**
 
@@ -274,10 +276,13 @@ GET: profile, submissions, progress.
   - Deserializes standardized input
   - Passes to user's code
   - Compares output with expected result
-- Example: Tree input `[3,9,20,null,null,15,7]` → deserialized to TreeNode object
 
 ---
 
 # References
 
 - [Hello Interview - Design LeetCode](https://www.hellointerview.com/learn/system-design/answer-keys/leetcode)
+
+---
+
+# Thank you
