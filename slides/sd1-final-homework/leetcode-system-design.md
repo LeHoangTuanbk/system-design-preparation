@@ -159,7 +159,7 @@ POST /contests/{contest_id}/register
 -> {success: true}
 
 GET /contests/{contest_id}/leaderboard?page=1&limit=50
-{rankings: [{rank, user, score, finish_time}]}
+-> {rankings: [{rank, user, score, finish_time}]}
 
 ```
 
