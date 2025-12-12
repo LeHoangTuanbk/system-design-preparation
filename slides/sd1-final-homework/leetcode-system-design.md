@@ -16,9 +16,8 @@ Members: Tuan Le Hoang - Hoang Long Le
 2. Back of the Envelope Estimation
 3. API Design
 4. Data Model Design
-5. High-level Design
-6. Detailed Design
-7. Identify and Discuss Bottle necks
+5. High-Level Design
+6. Discussion
 
 ---
 
